@@ -1,12 +1,13 @@
-import React, { Suspense, useEffect } from "react";
-import axios from "axios";
+import React, { Suspense } from "react";
 import styled from "@emotion/styled";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   filterBeerList,
-  beerListState,
   beerFilterState,
   fetchGithubInfo,
+  fetchBeerList,
+  beerObjState,
+  fetchBeerObject,
 } from "../../recoils/beer/BeerRecoil";
 
 const BeersWrapper = styled.div`
@@ -29,18 +30,12 @@ const ButtonWrapper = styled.div`
 `;
 
 const Beers = () => {
-  const [beerList, setBeerList] = useRecoilState(beerListState);
   const [beerFilter, setBeerfilter] = useRecoilState(beerFilterState);
+  const [beerInfo, setBeerInfo] = useRecoilState(beerObjState);
   const filterBeerListState = useRecoilValue(filterBeerList);
   const githubInfo = useRecoilValue(fetchGithubInfo);
-
-  useEffect(() => {
-    setTimeout(() => {
-      axios
-        .get("http://localhost:5000/beers")
-        .then((res) => setBeerList(res.data));
-    }, 1000);
-  }, []);
+  const beerFetchList = useRecoilValue(fetchBeerList);
+  const beerFetchObj = useRecoilValue(fetchBeerObject);
 
   const handleBeerfilter = (country) => {
     setBeerfilter(country);
@@ -48,10 +43,14 @@ const Beers = () => {
 
   const onSwitchList = () => {
     let newList = [];
-    if (beerList.length > 0 && filterBeerListState.length < 0)
-      newList = beerList;
+    if (beerFetchList.length > 0 && filterBeerListState.length < 0)
+      newList = beerFetchList;
     else if (filterBeerListState.length > 0) newList = filterBeerListState;
     return newList;
+  };
+
+  const onClickBeer = (id) => {
+    setBeerInfo(id);
   };
 
   return (
@@ -64,23 +63,43 @@ const Beers = () => {
       </ButtonWrapper>
       <BeersListWrapper>
         {onSwitchList()?.map((data, idx) => {
-          return <BeersListItem key={`beer-${idx}`}>{data.name}</BeersListItem>;
+          return (
+            <BeersListItem
+              key={`beer-${idx}`}
+              onClick={() => onClickBeer(data.id)}
+            >
+              {data.name}
+            </BeersListItem>
+          );
         })}
       </BeersListWrapper>
+
+      <BeersWrapper>
+        <h5>{"맥주 정보"}</h5>
+        <p>
+          {Object.keys(beerFetchObj)?.map((data, idx) => {
+            return (
+              <>
+                <span>{`${data}: ${beerFetchObj[data]}`}</span>
+                <br />
+              </>
+            );
+          })}
+        </p>
+      </BeersWrapper>
+
       <BeersWrapper>
         <h5>{"깃헙 정보"}</h5>
-        <Suspense fallback={"loading"}>
-          <p>
-            {Object.keys(githubInfo)?.map((data, idx) => {
-              return (
-                <>
-                  <span>{`${data}: ${githubInfo[data]}`}</span>
-                  <br />
-                </>
-              );
-            })}
-          </p>
-        </Suspense>
+        <p>
+          {Object.keys(githubInfo)?.map((data, idx) => {
+            return (
+              <>
+                <span>{`${data}: ${githubInfo[data]}`}</span>
+                <br />
+              </>
+            );
+          })}
+        </p>
       </BeersWrapper>
     </BeersWrapper>
   );

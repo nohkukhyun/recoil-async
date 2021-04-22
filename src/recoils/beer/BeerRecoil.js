@@ -1,9 +1,12 @@
 import axios from "axios";
 import { atom, selector } from "recoil";
 
-export const beerListState = atom({
+export const fetchBeerList = selector({
   key: "beerListState",
-  default: [],
+  get: async () => {
+    const rs = axios.get("http://localhost:5000/beers").then((res) => res.data);
+    return rs;
+  },
 });
 
 export const beerFilterState = atom({
@@ -15,7 +18,7 @@ export const filterBeerList = selector({
   key: "filterBeerList",
   get: ({ get }) => {
     const filter = get(beerFilterState);
-    const list = get(beerListState);
+    const list = get(fetchBeerList);
 
     switch (filter) {
       case "kr":
@@ -32,6 +35,21 @@ export const filterBeerList = selector({
       default:
         return list;
     }
+  },
+});
+
+export const beerObjState = atom({
+  key: "beerObjState",
+  default: 1,
+});
+
+export const fetchBeerObject = selector({
+  get: async ({ get }) => {
+    const idx = get(beerObjState);
+    const rs = await axios
+      .get(`http://localhost:5000/beers/${idx}`)
+      .then((res) => res.data);
+    return rs;
   },
 });
 

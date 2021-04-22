@@ -38,11 +38,13 @@ export const filterBeerList = selector({
   },
 });
 
+// 선택한 맥주 디폴트
 export const beerObjState = atom({
   key: "beerObjState",
   default: 1,
 });
 
+// 선택한 맥주 정보 가져오기
 export const fetchBeerObject = selector({
   get: async ({ get }) => {
     const idx = get(beerObjState);
@@ -53,6 +55,7 @@ export const fetchBeerObject = selector({
   },
 });
 
+// github 정보 가져오기
 export const fetchGithubInfo = selector({
   key: "/github",
   get: async () => {

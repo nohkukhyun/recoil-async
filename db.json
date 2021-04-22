@@ -1,0 +1,65 @@
+{
+  "beers": [
+    {
+      "id": 1,
+      "name": "Cass",
+      "country": "kr"
+    },
+    {
+      "id": 2,
+      "name": "Ob lager",
+      "content": "2 content",
+      "country": "kr"
+    },
+    {
+      "id": 3,
+      "name": "Hite",
+      "country": "kr"
+    },
+    {
+      "id": 4,
+      "name": "Edinger",
+      "country": "ger"
+    },
+    {
+      "id": 5,
+      "name": "Blanc",
+      "country": "ger"
+    },
+    {
+      "id": 6,
+      "name": "Edelwise",
+      "country": "ger"
+    },
+    {
+      "id": 7,
+      "name": "Egger",
+      "country": "ger"
+    },
+    {
+      "id": 8,
+      "name": "GomPyo",
+      "country": "kr"
+    },
+    {
+      "id": 9,
+      "name": "paulener",
+      "country": "ger"
+    },
+    {
+      "id": 10,
+      "name": "GawangHwaMoon",
+      "country": "kr"
+    },
+    {
+      "id": 11,
+      "name": "Hogarden",
+      "country": "bel"
+    },
+    {
+      "id": 12,
+      "name": "Chingtaho",
+      "country": "chi"
+    }
+  ]
+}

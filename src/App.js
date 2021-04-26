@@ -7,9 +7,7 @@ function App() {
   return (
     <RecoilRoot>
       <div className="App">
-        <Suspense fallback={<div>{"Loading..."}</div>}>
-          <Beers />
-        </Suspense>
+        <Beers />
       </div>
     </RecoilRoot>
   );

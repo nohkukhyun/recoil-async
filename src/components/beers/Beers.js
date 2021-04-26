@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { useState, useCallback, Suspense } from "react";
 import styled from "@emotion/styled";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -6,8 +6,7 @@ import {
   beerFilterState,
   fetchGithubInfo,
   fetchBeerList,
-  beerObjState,
-  fetchBeerObject,
+  getBeerInfo,
 } from "../../recoils/beer/BeerRecoil";
 
 const BeersWrapper = styled.div`
@@ -29,13 +28,13 @@ const ButtonWrapper = styled.div`
   align-items: center;
 `;
 
-const Beers = () => {
+const BeersComponent = () => {
   const [beerFilter, setBeerfilter] = useRecoilState(beerFilterState);
-  const [beerInfo, setBeerInfo] = useRecoilState(beerObjState);
   const filterBeerListState = useRecoilValue(filterBeerList);
   const githubInfo = useRecoilValue(fetchGithubInfo);
   const beerFetchList = useRecoilValue(fetchBeerList);
-  const beerFetchObj = useRecoilValue(fetchBeerObject);
+  const [beerNumber, setBeerNumber] = useState(1);
+  const getBeerInfos = useRecoilValue(getBeerInfo(beerNumber));
 
   const handleBeerfilter = (country) => {
     setBeerfilter(country);
@@ -49,9 +48,9 @@ const Beers = () => {
     return newList;
   };
 
-  const onClickBeer = (id) => {
-    setBeerInfo(id);
-  };
+  const onClickBeer = useCallback((id) => {
+    setBeerNumber(id);
+  }, []);
 
   return (
     <BeersWrapper>
@@ -76,32 +75,40 @@ const Beers = () => {
 
       <BeersWrapper>
         <h5>{"맥주 정보"}</h5>
-        <p>
-          {Object.keys(beerFetchObj)?.map((data, idx) => {
+        <div>
+          {Object.keys(getBeerInfos)?.map((data, idx) => {
             return (
-              <>
-                <span>{`${data}: ${beerFetchObj[data]}`}</span>
+              <div key={`beer-${idx}`}>
+                <span>{`${data}: ${getBeerInfos[data]}`}</span>
                 <br />
-              </>
+              </div>
             );
           })}
-        </p>
+        </div>
       </BeersWrapper>
 
-      <BeersWrapper>
+      {/* <BeersWrapper>
         <h5>{"깃헙 정보"}</h5>
-        <p>
+        <div>
           {Object.keys(githubInfo)?.map((data, idx) => {
             return (
-              <>
+              <div key={`data-${idx}`}>
                 <span>{`${data}: ${githubInfo[data]}`}</span>
                 <br />
-              </>
+              </div>
             );
           })}
-        </p>
-      </BeersWrapper>
+        </div>
+      </BeersWrapper> */}
     </BeersWrapper>
+  );
+};
+
+const Beers = () => {
+  return (
+    <Suspense fallback={<div>{"Loading..."}</div>}>
+      <BeersComponent />
+    </Suspense>
   );
 };
 

@@ -30,7 +30,7 @@ const ButtonWrapper = styled.div`
 
 const BeersComponent = () => {
   const [beerFilter, setBeerfilter] = useRecoilState(beerFilterState);
-  const filterBeerListState = useRecoilValue(filterBeerList);
+  const filterBeer = useRecoilValue(filterBeerList);
   const githubInfo = useRecoilValue(fetchGithubInfo);
   const beerFetchList = useRecoilValue(fetchBeerList);
   const [beerNumber, setBeerNumber] = useState(1);
@@ -42,9 +42,9 @@ const BeersComponent = () => {
 
   const onSwitchList = () => {
     let newList = [];
-    if (beerFetchList.length > 0 && filterBeerListState.length < 0)
+    if (beerFetchList.length > 0 && filterBeer.length < 0)
       newList = beerFetchList;
-    else if (filterBeerListState.length > 0) newList = filterBeerListState;
+    else if (filterBeer.length > 0) newList = filterBeer;
     return newList;
   };
 

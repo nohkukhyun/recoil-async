@@ -4,7 +4,9 @@ import { atom, selector, selectorFamily } from "recoil";
 export const fetchBeerList = selector({
   key: "beerListState",
   get: async () => {
-    const rs = axios.get("http://localhost:5000/beers").then((res) => res.data);
+    const rs = await axios
+      .get("http://localhost:5000/beers")
+      .then((res) => res.data);
     return rs;
   },
 });

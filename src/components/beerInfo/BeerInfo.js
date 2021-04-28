@@ -7,7 +7,7 @@ const BeerInfo = (props) => {
   const {
     match: { params },
   } = props;
-  const getBeerInfos = useRecoilValue(getBeerInfo(params.id));
+  const getBeerInfos = useRecoilValue(getBeerInfo(params?.id));
 
   return (
     <BeerInfoWrap>
